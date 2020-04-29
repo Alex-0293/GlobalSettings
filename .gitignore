@@ -5,3 +5,6 @@ VALUES/APP_SCRIPT_ADMIN_Login.dat
 VALUES/APP_SCRIPT_ADMIN_Pass.dat
 VALUES/KEYS/GlobalKey1.dat
 SETTINGS/Settings.ps1
+VALUES/SRV1_Administrator_Login.dat
+VALUES/SRV1_Administrator_Password.dat
+VALUES/KEYS/Key1.dat

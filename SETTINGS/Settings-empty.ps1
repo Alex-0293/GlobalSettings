@@ -1,3 +1,4 @@
+# Rename this file to settings.ps1
 ######################### no replacement #####################
 function Get-WorkDir () {
     if ($PSScriptRoot -eq "") {

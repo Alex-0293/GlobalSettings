@@ -9,9 +9,12 @@
 #>
 param (
     [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Path to script root folder." )]
-    [string] $MyScriptRoot
+    [string] $MyScriptRoot,
+    [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Will force init global vars." )]
+    [switch] $Force
 )
-$ImportResult = Import-Module AlexkUtils  -PassThru -force
+[datetime] $Global:ScriptStartTime = get-date
+$ImportResult    = Import-Module AlexkUtils  -PassThru -force
 if ($null -eq $ImportResult) {
     Write-Host "Module 'AlexkUtils' does not loaded!" -ForegroundColor Red
     exit 1
@@ -42,8 +45,9 @@ Function Initialize-Script   () {
     $SettingsFolder           = "SETTINGS"
 
     [string]$Global:GlobalSettingsPath = "$ScriptRootParent\$SettingsFolder\Settings.ps1"
-
-    Get-SettingsFromFile -SettingsFile $Global:GlobalSettingsPath
+    if (-not $Global:GlobalSettingsSuccessfullyLoaded -or $Force ){
+        Get-SettingsFromFile -SettingsFile $Global:GlobalSettingsPath
+    }
     if ($GlobalSettingsSuccessfullyLoaded) {    
         Get-SettingsFromFile -SettingsFile "$ProjectRoot\$($Global:SETTINGSFolder)\Settings.ps1"
         if ($Global:LocalSettingsSuccessfullyLoaded) {
@@ -62,3 +66,7 @@ Function Initialize-Script   () {
 }
 #########################################################################
 Initialize-Script
+$Global:ScriptNameStack += $Global:ScriptName
+$Global:StartDateStack  += $Global:ScriptStartTime
+$Global:ParentLevel = $Global:ScriptNameStack.count - 1
+Add-ToLog -message "Script [$($Global:ScriptName)] with PID [$($PID)] started." -logFilePath $ScriptLogFilePath -display -status "Info" -level $Global:ParentLevel

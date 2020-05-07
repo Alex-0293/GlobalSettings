@@ -1,4 +1,4 @@
-# Rename this file to settings.ps1
+# Rename this file to Settings.ps1
 ######################### no replacement #####################
 function Get-WorkDir () {
     if ($PSScriptRoot -eq "") {
@@ -35,13 +35,13 @@ trap {
 [string] $Global:Helpers            = "$(split-path $GlobalSettings -parent)\HELPERS"
 [string] $Global:ScriptFileName     = Split-Path $ProjectRoot -Leaf
 [string] $Global:ScriptBaseFileName = $ScriptFileName.split(".")[0] 
-[bool]   $Global:GlobalSettingsSuccessfullyLoaded = $True
-[string] $Global:OutputXMLPath     = "$ProjectRoot\$DATAFolder\ScriptBlockOutput.xml" #Start-PSScript output file for script blocks.
-[string] $Global:ScriptLogFilePath = "$ProjectRoot\$LOGSFolder\$ScriptFileName.log"
+[string] $Global:OutputXMLPath      = "$ProjectRoot\$DATAFolder\ScriptBlockOutput.xml" #Start-PSScript output file for script blocks.
+[string] $Global:ScriptLogFilePath  = "$ProjectRoot\$LOGSFolder\$ScriptFileName.log"
+[int16]  $Global:ParentLevel        = 0
+[array]  $Global:ScriptNameStack    = @()
+[array]  $Global:StartDateStack     = @()
 
+[bool]   $Global:GlobalSettingsSuccessfullyLoaded = $True
 ######################### value replacement ########################
 
-[string] $Global:GlobalKey1        = ""          # AES Key.
-
-
-
+[string] $Global:GlobalKey1             = ""          # AES Key.

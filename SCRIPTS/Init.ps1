@@ -11,42 +11,84 @@ param (
     [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Path to script root folder." )]
     [string] $MyScriptRoot,
     [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Select local init script name." )]
-    [string] $LocalInit
+    [string] $SettingsName,
+    [Parameter(Mandatory = $false, Position = 2, HelpMessage = "Dont init local settings." )]
+    [switch] $NoLocalSettings
 )
 [datetime] $Global:ScriptStartTime = get-date
 
 # Error trap
 trap {
-    if ($Global:Logger) {
-        Get-ErrorReporting $_
+    if (get-module -FullyQualifiedName AlexkUtils) {
+        Get-ErrorReporting $_        
         . "$GlobalSettings\$SCRIPTSFolder\Finish.ps1" 
     }
     Else {
         Write-Host "[$($MyInvocation.MyCommand.path)] There is error before logging initialized." -ForegroundColor Red
-    }   
+    }  
+    $Global:GlobalSettingsSuccessfullyLoaded = $false
     exit 1
 }
 
 #requires -version 3
 
 ################################# Script start here #################################
-$InitGlobalScript = "C:\DATA\Projects\GlobalSettings\SCRIPTS\InitGlobal.ps1"
-if (. "$InitGlobalScript" -MyScriptRoot $MyScriptRoot) { exit 1 }
+
+[string] $Global:ProjectRoot = Split-Path $MyScriptRoot -parent
+
+if ( ( -not $GlobalSettingsSuccessfullyLoaded ) -or ( $Null -eq $GlobalSettingsSuccessfullyLoaded )  ) {
+    $InitGlobalScript = "C:\DATA\Projects\GlobalSettings\SCRIPTS\InitGlobal.ps1"
+    if (. "$InitGlobalScript" -MyScriptRoot $MyScriptRoot) { exit 1 }
+}
 
 if ($GlobalSettingsSuccessfullyLoaded) {        
-    if ($LocalInit){
-        Get-SettingsFromFile -SettingsFile "$ProjectRoot\$($Global:SETTINGSFolder)\$LocalInit.ps1"
+    if (-not $NoLocalSettings) {
+        Write-Host "Initializing local settings." -ForegroundColor DarkGreen
+        if ($SettingsName){
+            Get-SettingsFromFile -SettingsFile "$ProjectRoot\$($Global:SETTINGSFolder)\$SettingsName.ps1"
+        }
+        Else {
+            Get-SettingsFromFile -SettingsFile "$ProjectRoot\$($Global:SETTINGSFolder)\Settings.ps1"
+        }
+        if (-not $LocalSettingsSuccessfullyLoaded) {    
+            Add-ToLog -Message "[Error] Error loading local settings!" -logFilePath "$(Split-Path -path $Global:MyScriptRoot -parent)\$LOGSFolder\$ErrorsLogFileName" -Display -Status "Error" -Format 'yyyy-MM-dd HH:mm:ss'
+            Exit 1 
+        }
     }
-    Else {
-        Get-SettingsFromFile -SettingsFile "$ProjectRoot\$($Global:SETTINGSFolder)\Settings.ps1"
+
+    $Global:ScriptName = $ScriptInvocation.MyCommand.Name
+    
+    $Global:ScriptArguments = ""
+    foreach ($boundparam in $ScriptInvocation.BoundParameters.GetEnumerator()) {
+        if ($boundparam.Value.GetType().name -eq "String") { 
+            $Global:ScriptArguments += "-$($boundparam.Key) `"$($boundparam.Value)`" "
+        }
+        Else {
+            $Global:ScriptArguments += "-$($boundparam.Key) $($boundparam.Value) "
+        }
     }
-    if (-not $LocalSettingsSuccessfullyLoaded) {    
-        Add-ToLog -Message "[Error] Error loading local settings!" -logFilePath "$(Split-Path -path $Global:MyScriptRoot -parent)\$LOGSFolder\$ErrorsLogFileName" -Display -Status "Error" -Format 'yyyy-MM-dd HH:mm:ss'
-        Exit 1 
+    
+    
+    $Global:ScriptFileName      = Split-Path $ProjectRoot -Leaf
+    $Global:ScriptBaseFileName  = $ScriptFileName.split(".")[0]
+    $Global:ScriptLogFilePath   = "$ProjectRoot\$LOGSFolder\$ScriptFileName.log"
+    $Global:ScriptArguments     = $Global:ScriptArguments.Trim()
+    $Global:ParentLevel         = $Global:ScriptStack.count
+
+    $ScriptStackItem = [PSCustomObject]@{
+        ScriptStartTime    = $Global:ScriptStartTime
+        ParentLevel        = $Global:ParentLevel
+        ScriptName         = $Global:ScriptName
+        ProjectRoot        = $Global:ProjectRoot        
+        ScriptArguments    = $Global:ScriptArguments
+        ScriptFileName     = $Global:ScriptFileName
+        ScriptBaseFileName = $Global:ScriptBaseFileName
+        ScriptLogFilePath  = $Global:ScriptLogFilePath
     }
-}
-Else { 
-    Add-ToLog -Message "[Error] Error loading global settings!" -logFilePath "$(Split-Path -path $Global:MyScriptRoot -parent)\LOGS\Errors.log" -Display -Status "Error" -Format 'yyyy-MM-dd HH:mm:ss'
-    Exit 1
+    $Global:ScriptStack += $ScriptStackItem
+    
+    Write-Host "ScriptNameStack: [$(($Global:ScriptStack | Select-Object ScriptName).ScriptName -join ", ")]"  -ForegroundColor DarkGreen
+
+    Add-ToLog -message "Script [$($Global:ScriptName) $($Global:ScriptArguments)] with PID [$($PID)] started under [$($RunningCredentials.Name)]." -logFilePath $ScriptLogFilePath -display -status "Info" -level $Global:ParentLevel
 }
 exit 0

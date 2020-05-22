@@ -1,0 +1,24 @@
+@startuml GlobalInit
+skinparam TitleBorderThickness 1
+skinparam TitleBorderRoundCorner 15
+skinparam TitleBackgroundColor red-yellow
+' skinparam handwritten true
+
+title GlobalInit process
+
+start
+    repeat
+        if (-not GlobalSettingsSuccessfullyLoaded -or empty) then (1)
+            :GlobalInit;
+            if (Error) then (1)
+                #Red:GlobalSettingsSuccessfullyLoaded = False;
+                stop
+            else (0)
+            endif
+        else (0)
+        endif
+    repeat while (Has child process) is (1)
+    ->0;
+    #Green:GlobalSettingsSuccessfullyLoaded = False;
+stop
+@enduml

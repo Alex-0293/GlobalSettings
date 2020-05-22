@@ -2,7 +2,7 @@
 ######################### no replacement #####################
 # Error trap
 trap {    
-    $Global:GlobalSettingsSuccessfullyLoaded = $False
+    
     exit 1
 }
 

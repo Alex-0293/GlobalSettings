@@ -39,8 +39,7 @@ trap {
 [string] $Global:ProjectRoot = Split-Path $MyScriptRoot -parent
 
 if ( $InitGlobal ) {
-    $InitGlobalScript = "C:\DATA\Projects\GlobalSettings\SCRIPTS\InitGlobal.ps1"
-    if (. "$InitGlobalScript" -MyScriptRoot $MyScriptRoot) { exit 1 }
+    if ($env:AlexKFrameworkGlobalInitScript) { if (. "$env:AlexKFrameworkGlobalInitScript" -MyScriptRoot $MyScriptRoot) { exit 1 }} Else { Write-Host "Environmental variable [AlexKFrameworkGlobalInitScript] does not exist!" -ForegroundColor Red; exit 1 }
 }
 
 if ($GlobalSettingsSuccessfullyLoaded -or (-not $InitGlobal )) {        

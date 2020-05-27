@@ -5,12 +5,12 @@ trap {
         
     }
     Else {
-        Write-Host "[$($MyInvocation.MyCommand.path)] There is error before logging initialized." -ForegroundColor Red
+        Write-Host "[$($MyInvocation.MyCommand.path)] There is error before logging initialized. Error: $_" -ForegroundColor Red
     }   
     exit 1
 }
 ################################# Script start here #################################
-Write-Host "ScriptNameStack: [$(($Global:ScriptStack | Select-Object ScriptName).ScriptName -join ", ")]"  -ForegroundColor DarkGreen
+#Write-Host "ScriptNameStack: [$(($Global:ScriptStack | Select-Object ScriptName).ScriptName -join ", ")]"  -ForegroundColor DarkGreen
 [datetime] $ScriptEndTime = Get-Date
 
 Add-ToLog -message "Script [$($Global:ScriptName)] exited. Executed [$(($ScriptEndTime - $ScriptStartTime).TotalSeconds)] seconds." -logFilePath $ScriptLogFilePath -display -status "Info"  -level $Global:ParentLevel
@@ -52,6 +52,5 @@ Else {
     $AfterRemove = (Get-Variable -Name *).count - 1
     Write-Host "Removed [$AfterRemove/$TotalVars], now [$($TotalVars-$AfterRemove)], on start [$InitVarsCount]." # Removed vars [$RemovedVars]."
     Remove-Variable "TotalVars", "InitVarsCount", "AfterRemove", "RemovedVars" -scope local -ErrorAction SilentlyContinue
-    $Global:GlobalSettingsSuccessfullyLoaded = $false
 }
 Exit 0

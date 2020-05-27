@@ -8,12 +8,14 @@
     .EXAMPLE
 #>
 param (
-    [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Path to script root folder." )]
+    [Parameter( Mandatory = $false, Position = 0, HelpMessage = "Initialize global settings." )]
+    [bool] $InitGlobal = $True,
+    [Parameter( Mandatory = $false, Position = 1, HelpMessage = "Initialize local settings." )]
+    [bool] $InitLocal = $True,  
+    [Parameter(Mandatory = $true, Position = 2, HelpMessage = "Path to script root folder." )]
     [string] $MyScriptRoot,
-    [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Select local init script name." )]
-    [string] $SettingsName,
-    [Parameter(Mandatory = $false, Position = 2, HelpMessage = "Dont init local settings." )]
-    [switch] $NoLocalSettings
+    [Parameter(Mandatory = $false, Position = 3, HelpMessage = "Select local init script name." )]
+    [string] $SettingsName
 )
 [datetime] $Global:ScriptStartTime = get-date
 
@@ -24,7 +26,7 @@ trap {
         . "$GlobalSettings\$SCRIPTSFolder\Finish.ps1" 
     }
     Else {
-        Write-Host "[$($MyInvocation.MyCommand.path)] There is error before logging initialized." -ForegroundColor Red
+        Write-Host "[$($MyInvocation.MyCommand.path)] There is error before logging initialized. Error: $_" -ForegroundColor Red
     }  
     $Global:GlobalSettingsSuccessfullyLoaded = $false
     exit 1
@@ -36,13 +38,13 @@ trap {
 
 [string] $Global:ProjectRoot = Split-Path $MyScriptRoot -parent
 
-if ( ( -not $GlobalSettingsSuccessfullyLoaded ) -or ( $Null -eq $GlobalSettingsSuccessfullyLoaded )  ) {
+if ( $InitGlobal ) {
     $InitGlobalScript = "C:\DATA\Projects\GlobalSettings\SCRIPTS\InitGlobal.ps1"
     if (. "$InitGlobalScript" -MyScriptRoot $MyScriptRoot) { exit 1 }
 }
 
-if ($GlobalSettingsSuccessfullyLoaded) {        
-    if (-not $NoLocalSettings) {
+if ($GlobalSettingsSuccessfullyLoaded -or (-not $InitGlobal )) {        
+    if ($InitLocal) {
         Write-Host "Initializing local settings." -ForegroundColor DarkGreen
         if ($SettingsName){
             Get-SettingsFromFile -SettingsFile "$ProjectRoot\$($Global:SETTINGSFolder)\$SettingsName.ps1"
@@ -87,7 +89,7 @@ if ($GlobalSettingsSuccessfullyLoaded) {
     }
     $Global:ScriptStack += $ScriptStackItem
     
-    Write-Host "ScriptNameStack: [$(($Global:ScriptStack | Select-Object ScriptName).ScriptName -join ", ")]"  -ForegroundColor DarkGreen
+    #Write-Host "ScriptNameStack: [$(($Global:ScriptStack | Select-Object ScriptName).ScriptName -join ", ")]"  -ForegroundColor DarkGreen
 
     Add-ToLog -message "Script [$($Global:ScriptName) $($Global:ScriptArguments)] with PID [$($PID)] started under [$($RunningCredentials.Name)]." -logFilePath $ScriptLogFilePath -display -status "Info" -level $Global:ParentLevel
 }

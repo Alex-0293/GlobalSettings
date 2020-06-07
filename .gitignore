@@ -12,3 +12,9 @@ VALUES/ADVALORE_APP_SCHDSVC_ADMIN_Login.dat
 VALUES/ADVALORE_APP_SCHDSVC_ADMIN_Password.dat
 VALUES/ubuntu18-repo_user1_Password.dat
 VALUES/ubuntu18-repo_user1_Login.dat
+DATA/NetworkAdapterCache.xml
+DATA/SwitchCache.xml
+DATA/VMCache.xml
+DATA/VMCheckpointCache.xml
+UML.puml
+UML.wsd

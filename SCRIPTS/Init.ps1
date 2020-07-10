@@ -61,8 +61,13 @@ if ($GlobalSettingsSuccessfullyLoaded -or (-not $InitGlobal )) {
     
     $Global:ScriptArguments = ""
     foreach ($boundparam in $ScriptInvocation.BoundParameters.GetEnumerator()) {
-        if ($boundparam.Value.GetType().name -eq "String") { 
-            $Global:ScriptArguments += "-$($boundparam.Key) `"$($boundparam.Value)`" "
+        if ($null -ne $boundparam.Value) {
+            if ($boundparam.Value.GetType().name -eq "String") { 
+                $Global:ScriptArguments += "-$($boundparam.Key) `"$($boundparam.Value)`" "
+            }
+            Else {
+                $Global:ScriptArguments += "-$($boundparam.Key) $($boundparam.Value) "
+            }
         }
         Else {
             $Global:ScriptArguments += "-$($boundparam.Key) $($boundparam.Value) "

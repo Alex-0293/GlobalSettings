@@ -1,5 +1,4 @@
 # Rename this file to Settings.ps1
-# Rename this file to Settings.ps1
 ######################### no replacement #####################
 # Latest Ver:1.1
 function Get-WorkDir () {
@@ -21,6 +20,12 @@ trap {
     $Global:GlobalSettingsSuccessfullyLoaded = $False
     exit 1
 }
+
+######################### value replacement ########################
+# Ver 1.2
+[string] $Global:MyProjectFolderPath = ""          # Replace this path
+
+######################### no replacement #####################
 # Ver 1.0
 [string] $Global:ErrorsLogFileName    = "Errors.log"
 [string] $Global:DATAFolder           = "DATA"
@@ -55,19 +60,17 @@ $Global:RunningCredentials            = [System.Security.Principal.WindowsIdenti
 [string] $Global:ScriptBaseFileName = ""
 [int16]  $Global:ParentLevel        = 0
 
-# Ver 1.1
-[string] $Global:ProjectServicesFolderPath = "C:\Users\Alex\Documents\ProjectServices"
-[string] $Global:ProjectsFolderPath        = "C:\Users\Alex\Documents\PROJECTS"
-[string] $Global:OtherProjectsFolderPath   = "C:\Users\Alex\Documents\OtherProjects"
+
+#Ver 1.2 
+[string] $Global:ProjectServicesFolderPath = "$($Global:MyProjectFolderPath)\ProjectServices"
+[string] $Global:ProjectsFolderPath        = "$($Global:MyProjectFolderPath)\PROJECTS"
+[string] $Global:OtherProjectsFolderPath   = "$($Global:MyProjectFolderPath)\OtherProjects"
 [array]  $Global:WorkFolderList            = @($Global:ProjectsFolderPath, $Global:ProjectServicesFolderPath, $Global:OtherProjectsFolderPath)
 [string] $Global:TemplateProjectPath       = "$($Global:ProjectServicesFolderPath)\TemplateProject"
 
-
 [bool]   $Global:GlobalSettingsSuccessfullyLoaded = $True
 
-######################### value replacement ########################
-
-[string] $Global:GlobalKey1        = ""          # AES Key.
-
+[string] $Global:GlobalKey1        = "$($Global:GlobalSettings)\$($Global:KEYSFolder)\Key1.dat"           # AES Key.
+[string] $Global:GlobalVMKey1      = "$($Global:GlobalSettings)\$($Global:KEYSFolder)\VMKey.dat"          # AES Key.
 
 

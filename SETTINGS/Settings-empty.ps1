@@ -39,8 +39,8 @@ trap {
 [array]  $Global:SPECIALFolders       = @($DATAFolder, $LOGSFolder, $SCRIPTSFolder, $SETTINGSFolder, $VALUESFolder, $ACLFolder)
 [string] $Global:KEYSFolder           = "$VALUESFolder\KEYS"
 [string] $Global:GlobalRoot           = Split-Path $ProjectRoot   -parent
-[string] $Global:GlobalSettings       = Split-Path (Split-Path $PSCommandPath -parent) -Parent
-[string] $Global:Helpers              = "$(Split-Path $GlobalSettings -parent)\HELPERS"
+[string] $Global:GlobalSettingsPath   = Split-Path (Split-Path $PSCommandPath -parent) -Parent
+[string] $Global:Helpers              = "$(Split-Path $GlobalSettingsPath -parent)\HELPERS"
 [string] $Global:ScriptLocalHost      = $Env:COMPUTERNAME
 [string] $Global:GlobalDateFormat     = "dd.MM.yyyy"
 [string] $Global:GlobalDateTimeFormat = "dd.MM.yyyy HH:mm:ss"
@@ -70,7 +70,7 @@ $Global:RunningCredentials            = [System.Security.Principal.WindowsIdenti
 
 [bool]   $Global:GlobalSettingsSuccessfullyLoaded = $True
 
-[string] $Global:GlobalKey1        = "$($Global:GlobalSettings)\$($Global:KEYSFolder)\Key1.dat"           # AES Key.
-[string] $Global:GlobalVMKey1      = "$($Global:GlobalSettings)\$($Global:KEYSFolder)\VMKey.dat"          # AES Key.
+[string] $Global:GlobalKey1        = "$($Global:GlobalSettingsPath)\$($Global:KEYSFolder)\Key1.dat"           # AES Key.
+[string] $Global:GlobalVMKey1      = "$($Global:GlobalSettingsPath)\$($Global:KEYSFolder)\VMKey.dat"          # AES Key.
 
 

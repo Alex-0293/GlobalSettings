@@ -65,6 +65,7 @@ $Global:RunningCredentials            = [System.Security.Principal.WindowsIdenti
 [string] $Global:ProjectServicesFolderPath = "$($Global:MyProjectFolderPath)\ProjectServices"
 [string] $Global:ProjectsFolderPath        = "$($Global:MyProjectFolderPath)\PROJECTS"
 [string] $Global:OtherProjectsFolderPath   = "$($Global:MyProjectFolderPath)\OtherProjects"
+[string] $Global:OtherProjectsFolderPath   = "$($Global:MyProjectFolderPath)\DisabledProjects" #Ver 1.3 
 [array]  $Global:WorkFolderList            = @($Global:ProjectsFolderPath, $Global:ProjectServicesFolderPath, $Global:OtherProjectsFolderPath)
 [string] $Global:TemplateProjectPath       = "$($Global:ProjectServicesFolderPath)\TemplateProject"
 

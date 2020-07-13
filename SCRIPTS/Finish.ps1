@@ -33,7 +33,7 @@ Else {
     if (Test-Path "$ProjectRoot\debug.txt") {
         $TranscriptPath = "$LogFolder\Transcript.log"
         Stop-Transcript  | Out-Null
-        Write-Host "Transcript stopped." -ForegroundColor Gray
+        Write-Host "Transcript stopped." -ForegroundColor Magenta
     }
 
     $TotalVars = (Get-Variable -Name *).count

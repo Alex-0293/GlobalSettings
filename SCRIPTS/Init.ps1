@@ -35,6 +35,27 @@ trap {
 #requires -version 3
 
 ################################# Script start here #################################
+Function Test-VariablesPath {
+    $PathName = "*ExistedPath"    
+    $PathVariables = Get-Variable $PathName -Exclude $Exclude
+    $PathError = $false
+    foreach ($item in $PathVariables){
+        $res = test-path -Path $item.Value
+        if (-not $res) {
+            $PathError = $true
+            Add-ToLog "Variable [$($item.name)] path [$($item.value)] not exist!" -display -status "error" -logFilePath $ScriptLogFilePath
+        }
+    }
+    if ($PathError){
+        if ($SettingsName) {
+            $SettingsFileName = "$SettingsName.ps1"
+        }
+        Else {
+            $SettingsFileName = "Settings.ps1"
+        }
+        throw "Settings file [$SettingsFileName] contains variable with non existing path!"
+    }
+}
 
 [string] $Global:ProjectRoot = Split-Path $MyScriptRoot -parent
 
@@ -43,6 +64,11 @@ if ( $InitGlobal ) {
 }
 
 if ($GlobalSettingsSuccessfullyLoaded -or (-not $InitGlobal )) {        
+    if (Test-Path "$($Global:ProjectRoot)\debug.txt") {
+        $TranscriptPath = "$($Global:ProjectRoot)\$($Global:LOGSFolder)\Transcript.log"
+        Start-Transcript -Path $TranscriptPath -Append -Force | Out-Null
+        Write-Host "Transcript started." -ForegroundColor Magenta
+    }
     if ($InitLocal) {
         Write-Host "Initializing local settings." -ForegroundColor DarkGreen
         if ($SettingsName){
@@ -89,6 +115,7 @@ if ($GlobalSettingsSuccessfullyLoaded -or (-not $InitGlobal )) {
     $Global:ScriptStack += $ScriptStackItem
     
     #Write-Host "ScriptNameStack: [$(($Global:ScriptStack | Select-Object ScriptName).ScriptName -join ", ")]"  -ForegroundColor DarkGreen
+    Test-VariablesPath
 
     Add-ToLog -message "Script [$($Global:ScriptName) $($Global:ScriptArguments)] with PID [$($PID)] started under [$($RunningCredentials.Name)]." -logFilePath $ScriptLogFilePath -display -status "Info" -level $Global:ParentLevel
 }

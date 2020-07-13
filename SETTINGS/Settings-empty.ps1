@@ -1,5 +1,4 @@
 # Rename this file to Settings.ps1
-# Rename this file to Settings.ps1
 ######################### no replacement #####################
 # Latest Ver:1.1
 function Get-WorkDir () {
@@ -21,6 +20,12 @@ trap {
     $Global:GlobalSettingsSuccessfullyLoaded = $False
     exit 1
 }
+
+######################### value replacement ########################
+# Ver 1.2
+[string] $Global:MyProjectFolderPath = ""          # Replace this path
+
+######################### no replacement #####################
 # Ver 1.0
 [string] $Global:ErrorsLogFileName    = "Errors.log"
 [string] $Global:DATAFolder           = "DATA"
@@ -34,8 +39,8 @@ trap {
 [array]  $Global:SPECIALFolders       = @($DATAFolder, $LOGSFolder, $SCRIPTSFolder, $SETTINGSFolder, $VALUESFolder, $ACLFolder)
 [string] $Global:KEYSFolder           = "$VALUESFolder\KEYS"
 [string] $Global:GlobalRoot           = Split-Path $ProjectRoot   -parent
-[string] $Global:GlobalSettings       = Split-Path (Split-Path $PSCommandPath -parent) -Parent
-[string] $Global:Helpers              = "$(Split-Path $GlobalSettings -parent)\HELPERS"
+[string] $Global:GlobalSettingsPath   = Split-Path (Split-Path $PSCommandPath -parent) -Parent
+[string] $Global:Helpers              = "$(Split-Path $GlobalSettingsPath -parent)\HELPERS"
 [string] $Global:ScriptLocalHost      = $Env:COMPUTERNAME
 [string] $Global:GlobalDateFormat     = "dd.MM.yyyy"
 [string] $Global:GlobalDateTimeFormat = "dd.MM.yyyy HH:mm:ss"
@@ -55,19 +60,18 @@ $Global:RunningCredentials            = [System.Security.Principal.WindowsIdenti
 [string] $Global:ScriptBaseFileName = ""
 [int16]  $Global:ParentLevel        = 0
 
-# Ver 1.1
-[string] $Global:ProjectServicesFolderPath = "C:\Users\Alex\Documents\ProjectServices"
-[string] $Global:ProjectsFolderPath        = "C:\Users\Alex\Documents\PROJECTS"
-[string] $Global:OtherProjectsFolderPath   = "C:\Users\Alex\Documents\OtherProjects"
+
+#Ver 1.2 
+[string] $Global:ProjectServicesFolderPath = "$($Global:MyProjectFolderPath)\ProjectServices"
+[string] $Global:ProjectsFolderPath        = "$($Global:MyProjectFolderPath)\PROJECTS"
+[string] $Global:OtherProjectsFolderPath   = "$($Global:MyProjectFolderPath)\OtherProjects"
+[string] $Global:OtherProjectsFolderPath   = "$($Global:MyProjectFolderPath)\DisabledProjects" #Ver 1.3 
 [array]  $Global:WorkFolderList            = @($Global:ProjectsFolderPath, $Global:ProjectServicesFolderPath, $Global:OtherProjectsFolderPath)
 [string] $Global:TemplateProjectPath       = "$($Global:ProjectServicesFolderPath)\TemplateProject"
 
-
 [bool]   $Global:GlobalSettingsSuccessfullyLoaded = $True
 
-######################### value replacement ########################
-
-[string] $Global:GlobalKey1        = ""          # AES Key.
-
+[string] $Global:GlobalKey1        = "$($Global:GlobalSettingsPath)\$($Global:KEYSFolder)\Key1.dat"           # AES Key.
+[string] $Global:GlobalVMKey1      = "$($Global:GlobalSettingsPath)\$($Global:KEYSFolder)\VMKey.dat"          # AES Key.
 
 

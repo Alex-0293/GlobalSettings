@@ -39,10 +39,12 @@ Function Test-VariablesPath {
     $PathName = "*ExistedPath"    
     $PathVariables = Get-Variable $PathName -Exclude $Exclude
     $PathError = $false
+    $VariablesWithPathError = @()
     foreach ($item in $PathVariables){
         $res = test-path -Path $item.Value
         if (-not $res) {
             $PathError = $true
+            $VariablesWithPathError += $item.name
             Add-ToLog "Variable [$($item.name)] path [$($item.value)] not exist!" -display -status "error" -logFilePath $ScriptLogFilePath
         }
     }
@@ -53,7 +55,7 @@ Function Test-VariablesPath {
         Else {
             $SettingsFileName = "Settings.ps1"
         }
-        throw "Settings file [$SettingsFileName] contains variable with non existing path!"
+        throw "Settings file [$SettingsFileName] contains variables [$($VariablesWithPathError -join ", ")] with non existing path!"
     }
 }
 

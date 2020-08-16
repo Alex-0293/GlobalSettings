@@ -1,6 +1,6 @@
 # Rename this file to Settings.ps1
 ######################### no replacement #####################
-# Latest Ver:1.1
+# Latest Ver:1.4
 function Get-WorkDir () {
     if ($PSScriptRoot -eq "") {
         if ($PWD -ne "") {
@@ -20,10 +20,9 @@ trap {
     $Global:GlobalSettingsSuccessfullyLoaded = $False
     exit 1
 }
-
 ######################### value replacement ########################
 # Ver 1.2
-[string] $Global:MyProjectFolderPath = ""          # Replace this path
+[string] $Global:MyProjectFolderPath = ""         
 
 ######################### no replacement #####################
 # Ver 1.0
@@ -38,9 +37,9 @@ trap {
 [string] $Global:EmptySettingsFile    = "Settings-empty.ps1"
 [array]  $Global:SPECIALFolders       = @($DATAFolder, $LOGSFolder, $SCRIPTSFolder, $SETTINGSFolder, $VALUESFolder, $ACLFolder)
 [string] $Global:KEYSFolder           = "$VALUESFolder\KEYS"
-[string] $Global:GlobalRoot           = Split-Path $ProjectRoot   -parent
-[string] $Global:GlobalSettingsPath   = Split-Path (Split-Path $PSCommandPath -parent) -Parent
-[string] $Global:Helpers              = "$(Split-Path $GlobalSettingsPath -parent)\HELPERS"
+[string] $Global:GlobalRoot           = Split-Path $ProjectRoot   -Parent
+[string] $Global:GlobalSettingsPath   = Split-Path (Split-Path $PSCommandPath -Parent) -Parent
+[string] $Global:Helpers              = "$(Split-Path $GlobalSettingsPath -Parent)\HELPERS"
 [string] $Global:ScriptLocalHost      = $Env:COMPUTERNAME
 [string] $Global:GlobalDateFormat     = "dd.MM.yyyy"
 [string] $Global:GlobalDateTimeFormat = "dd.MM.yyyy HH:mm:ss"
@@ -48,7 +47,7 @@ trap {
 [int16]  $Global:PauseBetweenRetries  = 500 # MilliSeconds
 [int16]  $Global:InitVarsCount        = (Get-Variable -Name *).count
 [int16]  $Global:LogFileNamePosition  = 230
-$Global:RunningCredentials            = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+         $Global:RunningCredentials   = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 
 # Create vars for local init
 [array]  $Global:ScriptStack        = @()
@@ -60,18 +59,37 @@ $Global:RunningCredentials            = [System.Security.Principal.WindowsIdenti
 [string] $Global:ScriptBaseFileName = ""
 [int16]  $Global:ParentLevel        = 0
 
-
 #Ver 1.2 
-[string] $Global:ProjectServicesFolderPath = "$($Global:MyProjectFolderPath)\ProjectServices"
-[string] $Global:ProjectsFolderPath        = "$($Global:MyProjectFolderPath)\PROJECTS"
-[string] $Global:OtherProjectsFolderPath   = "$($Global:MyProjectFolderPath)\OtherProjects"
-[string] $Global:OtherProjectsFolderPath   = "$($Global:MyProjectFolderPath)\DisabledProjects" #Ver 1.3 
-[array]  $Global:WorkFolderList            = @($Global:ProjectsFolderPath, $Global:ProjectServicesFolderPath, $Global:OtherProjectsFolderPath)
-[string] $Global:TemplateProjectPath       = "$($Global:ProjectServicesFolderPath)\TemplateProject"
+[string] $Global:ProjectServicesFolderPath  = "$($Global:MyProjectFolderPath)\ProjectServices"
+[string] $Global:ProjectsFolderPath         = "$($Global:MyProjectFolderPath)\PROJECTS"
+[string] $Global:OtherProjectsFolderPath    = "$($Global:MyProjectFolderPath)\OtherProjects"
+[string] $Global:DisabledProjectsFolderPath = "$($Global:MyProjectFolderPath)\DisabledProjects" #Ver 1.3 
+[string] $Global:TemplateProjectPath        = "$($Global:ProjectServicesFolderPath)\TemplateProject"
+[array]  $Global:WorkFolderList             = @($Global:ProjectsFolderPath, $Global:ProjectServicesFolderPath, $Global:OtherProjectsFolderPath)
+
+#Ver 1.4
+[HashTable] $Global:Plugins = @{"Telegram" = "$($Global:GlobalSettingsPath)\$($Global:SETTINGSFolder)\SettingsTelegram.ps1"; "Email" = "$($Global:GlobalSettingsPath)\$($Global:SETTINGSFolder)\SettingsEmail.ps1" }
+
+#Ver 1.5
+$Global:StateObject = [PSCustomObject]@{
+    Date        = ""
+    Host        = $Global:ScriptLocalHost   
+    Application = Split-Path -Path $Global:ProjectRoot -Leaf
+    Action      = ""
+    Data        = ""
+    State       = ""
+    GlobalState = ""
+}
+[string] $Global:StateFilePath = "$($Global:ProjectRoot)\$($Global:LOGSFolder)\States.xml"
 
 [bool]   $Global:GlobalSettingsSuccessfullyLoaded = $True
 
-[string] $Global:GlobalKey1        = "$($Global:GlobalSettingsPath)\$($Global:KEYSFolder)\Key1.dat"           # AES Key.
-[string] $Global:GlobalVMKey1      = "$($Global:GlobalSettingsPath)\$($Global:KEYSFolder)\VMKey.dat"          # AES Key.
+######################### value replacement ########################
 
-
+[string]$Global:MailUserFile  = ""         
+[string]$Global:MailPassFile  = ""         
+[string]$Global:GlobalKey1    = ""          # AES Key
+[string]$Global:GlobalKey2    = ""          # AES Key
+[String]$Global:APP_SCRIPT_ADMIN_LoginFilePath = ""         
+[String]$Global:APP_SCRIPT_ADMIN_PassFilePath  = ""         
+[string]$Global:GlobalVMKey1  = ""          # AES Key.

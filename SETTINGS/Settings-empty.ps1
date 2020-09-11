@@ -86,10 +86,11 @@ $Global:StateObject = [PSCustomObject]@{
 
 ######################### value replacement ########################
 
-[string]$Global:MailUserFile  = ""         
-[string]$Global:MailPassFile  = ""         
-[string]$Global:GlobalKey1    = ""          # AES Key
-[string]$Global:GlobalKey2    = ""          # AES Key
+[int]   $Global:SessionTimeout = ""         
+[string]$Global:MailUserFile   = ""         
+[string]$Global:MailPassFile   = ""         
+[string]$Global:GlobalKey1     = ""          # AES Key
+[string]$Global:GlobalKey2     = ""          # AES Key
 [String]$Global:APP_SCRIPT_ADMIN_LoginFilePath = ""         
 [String]$Global:APP_SCRIPT_ADMIN_PassFilePath  = ""         
-[string]$Global:GlobalVMKey1  = ""          # AES Key.
+[string]$Global:GlobalVMKey1   = ""          # AES Key.

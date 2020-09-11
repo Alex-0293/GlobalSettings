@@ -13,7 +13,8 @@ trap {
 #Write-Host "ScriptNameStack: [$(($Global:ScriptStack | Select-Object ScriptName).ScriptName -join ", ")]"  -ForegroundColor DarkGreen
 [datetime] $ScriptEndTime = Get-Date
 
-Add-ToLog -message "Script [$($Global:ScriptName)] exited. Executed [$(($ScriptEndTime - $ScriptStartTime).TotalSeconds)] seconds." -logFilePath $ScriptLogFilePath -display -status "Info"  -level $Global:ParentLevel
+$ScriptWithArgs = "$($Global:ScriptName) $($Global:ScriptArguments)".Trim()
+Add-ToLog -Message "Script [$ScriptWithArgs] exited. Executed [$(($ScriptEndTime - $ScriptStartTime).TotalSeconds)] seconds." -logFilePath $ScriptLogFilePath -Display -Status "Info"  -Level $Global:ParentLevel
 [array]$Global:ScriptStack = $Global:ScriptStack | Select-Object -first (@($Global:ScriptStack).count - 1)
 
 if (@($Global:ScriptStack).count) {

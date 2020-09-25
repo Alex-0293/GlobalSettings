@@ -122,14 +122,7 @@ if ($GlobalSettingsSuccessfullyLoaded -or (-not $InitGlobal )) {
     $Global:ScriptStack += $ScriptStackItem
     
     #Write-Host "ScriptNameStack: [$(($Global:ScriptStack | Select-Object ScriptName).ScriptName -join ", ")]"  -ForegroundColor DarkGreen
-    Test-VariablesPath
-    if ($Global:ScriptArguments) {
-        $ScriptView = "$($Global:ScriptName) $($Global:ScriptArguments)"
-    }
-    Else {
-        $ScriptView = $Global:ScriptName
-    }
-    Add-ToLog -Message "Script [$ScriptView] with PID [$($PID)] started under [$($RunningCredentials.Name)]." -logFilePath $ScriptLogFilePath -Display -Status "Info" -Level $Global:ParentLevel
+    Test-VariablesPath    
     $ScriptWithArgs = "$($Global:ScriptName) $($Global:ScriptArguments)".Trim()
     Add-ToLog -Message "Script [$ScriptWithArgs] with PID [$($PID)] started under [$($RunningCredentials.Name)]." -logFilePath $ScriptLogFilePath -Display -Status "Info" -Level $Global:ParentLevel
 }

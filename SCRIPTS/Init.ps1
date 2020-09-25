@@ -130,5 +130,7 @@ if ($GlobalSettingsSuccessfullyLoaded -or (-not $InitGlobal )) {
         $ScriptView = $Global:ScriptName
     }
     Add-ToLog -Message "Script [$ScriptView] with PID [$($PID)] started under [$($RunningCredentials.Name)]." -logFilePath $ScriptLogFilePath -Display -Status "Info" -Level $Global:ParentLevel
+    $ScriptWithArgs = "$($Global:ScriptName) $($Global:ScriptArguments)".Trim()
+    Add-ToLog -Message "Script [$ScriptWithArgs] with PID [$($PID)] started under [$($RunningCredentials.Name)]." -logFilePath $ScriptLogFilePath -Display -Status "Info" -Level $Global:ParentLevel
 }
 exit 0

@@ -75,3 +75,11 @@ $Global:RunningCredentials            = [System.Security.Principal.WindowsIdenti
 [string] $Global:GlobalVMKey1      = "$($Global:GlobalSettingsPath)\$($Global:KEYSFolder)\VMKey.dat"          # AES Key.
 
 
+[int]   $Global:SessionTimeout = ""         
+[string]$Global:MailUserFile   = ""         
+[string]$Global:MailPassFile   = ""         
+[string]$Global:GlobalKey1     = ""          # AES Key
+[string]$Global:GlobalKey2     = ""          # AES Key
+[String]$Global:APP_SCRIPT_ADMIN_LoginFilePath = ""         
+[String]$Global:APP_SCRIPT_ADMIN_PassFilePath  = ""         
+[string]$Global:GlobalVMKey1   = ""          # AES Key.

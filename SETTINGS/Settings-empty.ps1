@@ -17,69 +17,69 @@ function Get-WorkDir () {
 }
 # Error trap
 trap {
-    $Global:GlobalSettingsSuccessfullyLoaded = $False
+    $Global:gsGlobalSettingsSuccessfullyLoaded = $False
     exit 1
 }
 
 ######################### value replacement ########################
 # Ver 1.2
-[string] $Global:MyProjectFolderPath = ""          # Replace this path
+[string] $Global:gsMyProjectFolderPath = ""          # Replace this path
 
 ######################### no replacement #####################
 # Ver 1.0
-[string] $Global:ErrorsLogFileName    = "Errors.log"
-[string] $Global:DATAFolder           = "DATA"
-[string] $Global:LOGSFolder           = "LOGS"
-[string] $Global:SCRIPTSFolder        = "SCRIPTS"
-[string] $Global:SETTINGSFolder       = "SETTINGS"
-[string] $Global:VALUESFolder         = "VALUES"
-[string] $Global:ACLFolder            = "ACL"
-[string] $Global:DefaultSettingsFile  = "Settings.ps1"
-[string] $Global:EmptySettingsFile    = "Settings-empty.ps1"
-[array]  $Global:SPECIALFolders       = @($DATAFolder, $LOGSFolder, $SCRIPTSFolder, $SETTINGSFolder, $VALUESFolder, $ACLFolder)
-[string] $Global:KEYSFolder           = "$VALUESFolder\KEYS"
-[string] $Global:GlobalRoot           = Split-Path $ProjectRoot   -parent
-[string] $Global:GlobalSettingsPath   = Split-Path (Split-Path $PSCommandPath -parent) -Parent
-[string] $Global:Helpers              = "$(Split-Path $GlobalSettingsPath -parent)\HELPERS"
-[string] $Global:ScriptLocalHost      = $Env:COMPUTERNAME
-[string] $Global:GlobalDateFormat     = "dd.MM.yyyy"
-[string] $Global:GlobalDateTimeFormat = "dd.MM.yyyy HH:mm:ss"
-[int16]  $Global:ScriptOperationTry   = 3
-[int16]  $Global:PauseBetweenRetries  = 500 # MilliSeconds
-[int16]  $Global:InitVarsCount        = (Get-Variable -Name *).count
-[int16]  $Global:LogFileNamePosition  = 230
-$Global:RunningCredentials            = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+[string] $Global:gsErrorsLogFileName    = "Errors.log"
+[string] $Global:gsDATAFolder           = "DATA"
+[string] $Global:gsLOGSFolder           = "LOGS"
+[string] $Global:gsSCRIPTSFolder        = "SCRIPTS"
+[string] $Global:gsSETTINGSFolder       = "SETTINGS"
+[string] $Global:gsVALUESFolder         = "VALUES"
+[string] $Global:gsACLFolder            = "ACL"
+[string] $Global:gsDefaultSettingsFile  = "Settings.ps1"
+[string] $Global:gsEmptySettingsFile    = "Settings-empty.ps1"
+[array]  $Global:gsSPECIALFolders       = @($Global:gsDATAFolder, $Global:gsLOGSFolder, $Global:gsSCRIPTSFolder, $Global:gsSETTINGSFolder, $Global:gsVALUESFolder, $Global:gsACLFolder)
+[string] $Global:gsKEYSFolder           = "$($Global:gsVALUESFolder)\KEYS"
+[string] $Global:gsGlobalRoot           = Split-Path $ProjectRoot   -parent
+[string] $Global:gsGlobalSettingsPath   = Split-Path (Split-Path $PSCommandPath -parent) -Parent
+[string] $Global:gsHelpers              = "$(Split-Path $($Global:gsGlobalSettingsPath) -parent)\HELPERS"
+[string] $Global:gsScriptLocalHost      = $Env:COMPUTERNAME
+[string] $Global:gsGlobalDateFormat     = "dd.MM.yyyy"
+[string] $Global:gsGlobalDateTimeFormat = "dd.MM.yyyy HH:mm:ss"
+[int16]  $Global:gsScriptOperationTry   = 3
+[int16]  $Global:gsPauseBetweenRetries  = 500 # MilliSeconds
+[int16]  $Global:gsInitVarsCount        = (Get-Variable -Name *).count
+[int16]  $Global:gsLogFileNamePosition  = 230
+$Global:gsRunningCredentials            = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 
 # Create vars for local init
-[array]  $Global:ScriptStack        = @()
-[array]  $Global:LogBuffer          = @()
-[string] $Global:ScriptArguments    = ""
-[string] $Global:ScriptName         = ""
-[string] $Global:ScriptLogFilePath  = ""
-[string] $Global:ScriptFileName     = ""
-[string] $Global:ScriptBaseFileName = ""
-[int16]  $Global:ParentLevel        = 0
+[array]  $Global:gsScriptStack        = @()
+[array]  $Global:gsLogBuffer          = @()
+[string] $Global:gsScriptArguments    = ""
+[string] $Global:gsScriptName         = ""
+[string] $Global:gsScriptLogFilePath  = ""
+[string] $Global:gsScriptFileName     = ""
+[string] $Global:gsScriptBaseFileName = ""
+[int16]  $Global:gsParentLevel        = 0
 
 
 #Ver 1.2 
-[string] $Global:ProjectServicesFolderPath  = "$($Global:MyProjectFolderPath)\ProjectServices"
-[string] $Global:ProjectsFolderPath         = "$($Global:MyProjectFolderPath)\PROJECTS"
-[string] $Global:OtherProjectsFolderPath    = "$($Global:MyProjectFolderPath)\OtherProjects"
-[string] $Global:DisabledProjectsFolderPath = "$($Global:MyProjectFolderPath)\DisabledProjects" #Ver 1.3 
-[array]  $Global:WorkFolderList             = @($Global:ProjectsFolderPath, $Global:ProjectServicesFolderPath, $Global:OtherProjectsFolderPath)
-[string] $Global:TemplateProjectPath        = "$($Global:ProjectServicesFolderPath)\TemplateProject"
+[string] $Global:gsProjectServicesFolderPath  = "$($Global:gsMyProjectFolderPath)\ProjectServices"
+[string] $Global:ProjectsFolderPath         = "$($Global:gsMyProjectFolderPath)\PROJECTS"
+[string] $Global:gsOtherProjectsFolderPath    = "$($Global:gsMyProjectFolderPath)\OtherProjects"
+[string] $Global:gsDisabledProjectsFolderPath = "$($Global:gsMyProjectFolderPath)\DisabledProjects" #Ver 1.3 
+[array]  $Global:gsWorkFolderList             = @($Global:ProjectsFolderPath, $Global:gsProjectServicesFolderPath, $Global:gsOtherProjectsFolderPath)
+[string] $Global:gsTemplateProjectPath        = "$($Global:gsProjectServicesFolderPath)\TemplateProject"
 
-[bool]   $Global:GlobalSettingsSuccessfullyLoaded = $True
+[bool]   $Global:gsGlobalSettingsSuccessfullyLoaded = $True
 
-[string] $Global:GlobalKey1        = "$($Global:GlobalSettingsPath)\$($Global:KEYSFolder)\Key1.dat"           # AES Key.
-[string] $Global:GlobalVMKey1      = "$($Global:GlobalSettingsPath)\$($Global:KEYSFolder)\VMKey.dat"          # AES Key.
+[string] $Global:gsGlobalKey1        = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\Key1.dat"           # AES Key.
+[string] $Global:gsGlobalVMKey1      = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\VMKey.dat"          # AES Key.
 
 
 [int]   $Global:SessionTimeout = ""         
 [string]$Global:MailUserFile   = ""         
 [string]$Global:MailPassFile   = ""         
-[string]$Global:GlobalKey1     = ""          # AES Key
+[string]$Global:gsGlobalKey1     = ""          # AES Key
 [string]$Global:GlobalKey2     = ""          # AES Key
 [String]$Global:APP_SCRIPT_ADMIN_LoginFilePath = ""         
 [String]$Global:APP_SCRIPT_ADMIN_PassFilePath  = ""         
-[string]$Global:GlobalVMKey1   = ""          # AES Key.
+[string]$Global:gsGlobalVMKey1   = ""          # AES Key.

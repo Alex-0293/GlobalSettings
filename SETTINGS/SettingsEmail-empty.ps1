@@ -8,12 +8,12 @@
 
 
 [Bool]   $Global:UseMailAuth         = $True
-[string] $Global:MailUserExistedPath = "$($Global:GlobalSettingsPath)\$($Global:VALUESFolder)\MailUser.dat" #Enc user
-[string] $Global:MailPassExistedPath = "$($Global:GlobalSettingsPath)\$($Global:VALUESFolder)\MailPass.dat" #Enc pass
+[string] $Global:MailUserExistedPath = "$($Global:gsGlobalSettingsPath)\$($Global:gsVALUESFolder)\MailUser.dat" #Enc user
+[string] $Global:MailPassExistedPath = "$($Global:gsGlobalSettingsPath)\$($Global:gsVALUESFolder)\MailPass.dat" #Enc pass
 
 
-[SecureString] $MailUser = AlexkUtils\Get-VarFromAESFile -AESKeyFilePath $Global:GlobalKey1  -VarFilePath $Global:MailUserExistedPath
-[SecureString] $MailPass = AlexkUtils\Get-VarFromAESFile -AESKeyFilePath $Global:GlobalKey1  -VarFilePath $Global:MailPassExistedPath
+[SecureString] $MailUser = AlexkUtils\Get-VarFromAESFile -AESKeyFilePath $Global:gsGlobalKey1  -VarFilePath $Global:MailUserExistedPath
+[SecureString] $MailPass = AlexkUtils\Get-VarFromAESFile -AESKeyFilePath $Global:gsGlobalKey1  -VarFilePath $Global:MailPassExistedPath
 
 [HashTable] $Data = @{
     SmtpServer  = $Global:SmtpServer

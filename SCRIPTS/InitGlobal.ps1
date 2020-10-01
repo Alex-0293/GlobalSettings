@@ -1,10 +1,9 @@
 <#
-    .SYNOPSIS 
+    .SYNOPSIS
         Creator
         dd.MM.yyyy
         Ver
     .DESCRIPTION
-    .PARAMETER
     .EXAMPLE
 #>
 param (
@@ -13,7 +12,7 @@ param (
     [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Select local init script name." )]
     [string] $LocalInit
 )
-[datetime] $Global:ScriptStartTime = Get-Date
+[DateTime] $Global:ScriptStartTime = Get-Date
 $ImportResult = Import-Module AlexkUtils  -PassThru -force
 if ($null -eq $ImportResult) {
     Write-Host "Module 'AlexkUtils' does not loaded!" -ForegroundColor Red
@@ -25,13 +24,13 @@ else {
 # Error trap
 trap {
     if (get-module -FullyQualifiedName AlexkUtils) {
-        Get-ErrorReporting $_        
-        . "$GlobalSettingsPath\$SCRIPTSFolder\Finish.ps1" 
+        Get-ErrorReporting $_
+        . "$($Global:gsGlobalSettingsPath)\$($Global:gsSCRIPTSFolder)\Finish.ps1"
     }
     Else {
         Write-Host "[$($MyInvocation.MyCommand.path)] There is error before logging initialized. Error: $_" -ForegroundColor Red
-    }  
-    $Global:GlobalSettingsSuccessfullyLoaded = $false
+    }
+    $Global:gsGlobalSettingsSuccessfullyLoaded = $false
     exit 1
 }
 
@@ -42,11 +41,11 @@ Function Initialize-Script   ($ScriptRoot) {
     $ScriptRootParent = Split-Path -path $ScriptRoot -Parent
     $SettingsFolder   = "SETTINGS"
 
-    [string]$Global:GlobalSettingsPath = "$ScriptRootParent\$SettingsFolder\Settings.ps1"
+    [string]$Global:gsGlobalSettingsPath = "$ScriptRootParent\$SettingsFolder\Settings.ps1"
     write-host "Initializing global settings." -ForegroundColor DarkGreen
-    Get-SettingsFromFile -SettingsFile $Global:GlobalSettingsPath
+    Get-SettingsFromFile -SettingsFile $Global:gsGlobalSettingsPath
 
-    if ( -not $GlobalSettingsSuccessfullyLoaded ) { 
+    if ( -not $Global:gsGlobalSettingsSuccessfullyLoaded ) {
         Add-ToLog -Message "[Error] Error loading global settings!" -logFilePath "$(Split-Path -path $Global:MyScriptRoot -parent)\LOGS\Errors.log" -Display -Status "Error" -Format "dd.MM.yyyy HH:mm:ss"
         Exit 1
     }

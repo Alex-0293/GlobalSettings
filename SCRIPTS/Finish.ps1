@@ -10,25 +10,27 @@ trap {
     exit 1
 }
 ################################# Script start here #################################
-#Write-Host "ScriptNameStack: [$(($Global:ScriptStack | Select-Object ScriptName).ScriptName -join ", ")]"  -ForegroundColor DarkGreen
+#Write-Host "ScriptNameStack: [$(($($Global:gsScriptStack) | Select-Object ScriptName).ScriptName -join ", ")]"  -ForegroundColor DarkGreen
 [datetime] $ScriptEndTime = Get-Date
 
-$ScriptWithArgs = "$($Global:ScriptName) $($Global:ScriptArguments)".Trim()
-Add-ToLog -Message "Script [$ScriptWithArgs] exited. Executed [$(($ScriptEndTime - $ScriptStartTime).TotalSeconds)] seconds." -logFilePath $ScriptLogFilePath -Display -Status "Info"  -Level $Global:ParentLevel
-[array]$Global:ScriptStack = $Global:ScriptStack | Select-Object -first (@($Global:ScriptStack).count - 1)
+$ScriptWithArgs = "$($Global:gsScriptName) $($Global:gsScriptArguments)".Trim()
+$TimeSpan       = New-TimeSpan -start $ScriptStartTime -End $ScriptEndTime
+$ExecutionTime  = Format-TimeSpan -TimeSpan $TimeSpan
+Add-ToLog -Message "Script [$ScriptWithArgs] exited. Execution time [$ExecutionTime]." -logFilePath $Global:gsScriptLogFilePath -Display -Status "Info"  -Level $Global:gsParentLevel
+[array]$Global:gsScriptStack = $Global:gsScriptStack | Select-Object -first (@($Global:gsScriptStack).count - 1)
 
-if (@($Global:ScriptStack).count) {
+if (@($Global:gsScriptStack).count) {
     # Restore parent script params
-    $LastScriptStackItem = $Global:ScriptStack  | Select-Object -last 1 
+    $LastScriptStackItem = $Global:gsScriptStack  | Select-Object -last 1 
 
     $Global:ScriptStartTime    = $LastScriptStackItem.ScriptStartTime
-    $Global:ParentLevel        = $LastScriptStackItem.ParentLevel
-    $Global:ScriptName         = $LastScriptStackItem.ScriptName
+    $Global:gsParentLevel        = $LastScriptStackItem.ParentLevel
+    $Global:gsScriptName         = $LastScriptStackItem.ScriptName
     $Global:ProjectRoot        = $LastScriptStackItem.ProjectRoot
-    $Global:ScriptArguments    = $LastScriptStackItem.ScriptArguments
-    $Global:ScriptFileName     = $LastScriptStackItem.ScriptFileName
-    $Global:ScriptBaseFileName = $LastScriptStackItem.ScriptBaseFileName
-    $Global:ScriptLogFilePath  = $LastScriptStackItem.ScriptLogFilePath  
+    $Global:gsScriptArguments    = $LastScriptStackItem.ScriptArguments
+    $Global:gsScriptFileName     = $LastScriptStackItem.ScriptFileName
+    $Global:gsScriptBaseFileName = $LastScriptStackItem.ScriptBaseFileName
+    $Global:gsScriptLogFilePath  = $LastScriptStackItem.ScriptLogFilePath  
 }
 Else {
     if (Test-Path "$ProjectRoot\debug.txt") {
@@ -51,7 +53,7 @@ Else {
         }       
     }
     $AfterRemove = (Get-Variable -Name *).count - 1
-    Write-Host "Removed [$AfterRemove/$TotalVars], now [$($TotalVars-$AfterRemove)], on start [$InitVarsCount]." # Removed vars [$RemovedVars]."
+    Write-Host "Removed [$AfterRemove/$TotalVars], now [$($TotalVars-$AfterRemove)], on start [$Global:gsInitVarsCount]." # Removed vars [$RemovedVars]."
     Remove-Variable "TotalVars", "InitVarsCount", "AfterRemove", "RemovedVars" -scope local -ErrorAction SilentlyContinue
 }
 Exit 0

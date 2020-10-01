@@ -10,3 +10,6 @@ UML.wsd
 SETTINGS/Mail.ps1
 SETTINGS/SettingsTelegram.ps1
 SETTINGS/SettingsEmail.ps1
+VMCheckpointCache.xml
+NetworkAdapterCache.xml
+SwitchCache.xml

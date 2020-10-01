@@ -4,10 +4,10 @@
 
 ######################### no replacement ########################
 
-[string] $Global:TelegramTokenExistedPath  = "$($Global:GlobalSettingsPath)\$($Global:VALUESFolder)\Telegram_Token.dat"
-[string] $Global:TelegramChatIdExistedPath = "$($Global:GlobalSettingsPath)\$($Global:VALUESFolder)\Telegram_ChatId.dat"
-[SecureString] $TelegramToken       = AlexkUtils\Get-VarFromAESFile -AESKeyFilePath $Global:GlobalKey1  -VarFilePath $Global:TelegramTokenExistedPath
-[SecureString] $TelegramChatId      = AlexkUtils\Get-VarFromAESFile -AESKeyFilePath $Global:GlobalKey1  -VarFilePath $Global:TelegramChatIdExistedPath
+[string] $Global:TelegramTokenExistedPath  = "$($Global:gsGlobalSettingsPath)\$($Global:gsVALUESFolder)\Telegram_Token.dat"
+[string] $Global:TelegramChatIdExistedPath = "$($Global:gsGlobalSettingsPath)\$($Global:gsVALUESFolder)\Telegram_ChatId.dat"
+[SecureString] $TelegramToken       = AlexkUtils\Get-VarFromAESFile -AESKeyFilePath $Global:gsGlobalKey1  -VarFilePath $Global:TelegramTokenExistedPath
+[SecureString] $TelegramChatId      = AlexkUtils\Get-VarFromAESFile -AESKeyFilePath $Global:gsGlobalKey1  -VarFilePath $Global:TelegramChatIdExistedPath
 
 [HashTable] $TelegramData = @{
     Token  = $TelegramToken;

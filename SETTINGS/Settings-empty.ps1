@@ -46,7 +46,6 @@ trap {
 [string] $Global:gsGlobalDateTimeFormat = "dd.MM.yyyy HH:mm:ss"
 [int16]  $Global:gsScriptOperationTry   = 3
 [int16]  $Global:gsPauseBetweenRetries  = 500 # MilliSeconds
-[int16]  $Global:gsInitVarsCount        = (Get-Variable -Name *).count
 [int16]  $Global:gsLogFileNamePosition  = 230
 $Global:gsRunningCredentials            = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 
@@ -63,23 +62,17 @@ $Global:gsRunningCredentials            = [System.Security.Principal.WindowsIden
 
 #Ver 1.2 
 [string] $Global:gsProjectServicesFolderPath  = "$($Global:gsMyProjectFolderPath)\ProjectServices"
-[string] $Global:ProjectsFolderPath         = "$($Global:gsMyProjectFolderPath)\PROJECTS"
+[string] $Global:gsProjectsFolderPath           = "$($Global:gsMyProjectFolderPath)\PROJECTS"
 [string] $Global:gsOtherProjectsFolderPath    = "$($Global:gsMyProjectFolderPath)\OtherProjects"
 [string] $Global:gsDisabledProjectsFolderPath = "$($Global:gsMyProjectFolderPath)\DisabledProjects" #Ver 1.3 
-[array]  $Global:gsWorkFolderList             = @($Global:ProjectsFolderPath, $Global:gsProjectServicesFolderPath, $Global:gsOtherProjectsFolderPath)
+[array]  $Global:gsWorkFolderList             = @($Global:gsProjectsFolderPath, $Global:gsProjectServicesFolderPath, $Global:gsOtherProjectsFolderPath)
 [string] $Global:gsTemplateProjectPath        = "$($Global:gsProjectServicesFolderPath)\TemplateProject"
 
-[bool]   $Global:gsGlobalSettingsSuccessfullyLoaded = $True
-
-[string] $Global:gsGlobalKey1        = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\Key1.dat"           # AES Key.
-[string] $Global:gsGlobalVMKey1      = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\VMKey.dat"          # AES Key.
+[string] $Global:gsGlobalKey1   = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\GlobalKey1.dat"      # AES Key.
+[string] $Global:gsGlobalVMKey1 = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\VMKey.dat"          # AES Key.
 
 
-[int]   $Global:SessionTimeout = ""         
-[string]$Global:MailUserFile   = ""         
-[string]$Global:MailPassFile   = ""         
-[string]$Global:gsGlobalKey1     = ""          # AES Key
-[string]$Global:GlobalKey2     = ""          # AES Key
-[String]$Global:APP_SCRIPT_ADMIN_LoginFilePath = ""         
-[String]$Global:APP_SCRIPT_ADMIN_PassFilePath  = ""         
-[string]$Global:gsGlobalVMKey1   = ""          # AES Key.
+[int]   $Global:gsSessionTimeout = ""         
+[string]$Global:gsMailUserFile   = ""         
+[string]$Global:gsMailPassFile   = ""         
+

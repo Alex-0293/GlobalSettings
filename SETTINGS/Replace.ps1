@@ -1,10 +1,11 @@
 #Replace file
-# [array] $Global:ReplaceScope = "D:\DATA\DOCUMENTS\MyProjects\Projects\ADStructureCreator"
-# $Global:ReplaceScope += "D:\DATA\DOCUMENTS\MyProjects\Projects\HELKInstaller"
+[array] $Global:ReplaceScope = "C:\DATA\MyProjects\Projects\ScriptScheduler" #$Global:gsProjectsFolderPath
+#$Global:ReplaceScope        += $Global:gsProjectServicesFolderPath
+#$Global:ReplaceScope += "C:\Program Files\WindowsPowerShell\Modules\AlexkUtils"
 # $Global:ReplaceScope += "D:\DATA\DOCUMENTS\MyProjects\Projects\VirtualLab-Win2016-OPNSens"
 # $Global:ReplaceScope += "D:\DATA\DOCUMENTS\MyProjects\Projects\VMScripts"
 # $Global:ReplaceScope += "C:\Program Files\WindowsPowerShell\Modules\AlexkLinuxGuestUtils"
-$Global:ReplaceScope = "C:\Program Files\WindowsPowerShell\Modules\AlexkVMUtils"
+#$Global:ReplaceScope = "C:\Program Files\WindowsPowerShell\Modules\AlexkVMUtils"
 # $Global:ReplaceScope += "C:\Program Files\WindowsPowerShell\Modules\AlexkWindowsGuestUtils"
 Write-Host "Replace scope: " -NoNewline
 Write-Host "$($Global:ReplaceScope -join ",")" -ForegroundColor Cyan
@@ -99,15 +100,37 @@ $Replaces += [PSCustomObject]@{Find = '.LANG'                             ; Repl
 $Replaces += [PSCustomObject]@{Find = '.NOTE'                             ; Replace = '.NOTES' ; Version = $Version; Date = $date }
 $Replaces += [PSCustomObject]@{Find = '.PARAMETER'                        ; Replace = '' ; Version = $Version; Date = $date }
 
-$Global:Replaces     = @()
-$Date = Get-Date -Date "29.09.2020"
+$Version = "1"
+$Date = Get-Date -Date "02.10.2020"
 
-$FunctionScope = "Export-CustomVM", "Add-VMNetAdapter", "Remove-VMNetAdapter", "Get-VMList", "Get-VMCheckpointList", "Set-VMStartupOrder", "Get-VMStartupOrder", "Install-RDPShortcutsForVMConsoles", "Add-CustomVM", "Add-VMCheckPoint", "Start-CustomVM", "Stop-CustomVM", "Suspend-CustomVM", "Save-CustomVM", "Resume-CustomVM", "Restore-VMCheckpoint", "Remove-CustomVM", "Rename-CustomVM", "Get-VMSettings", "Move-VMStorage", "Add-BootISO", "Remove-BootISO", "Set-VMRamSize", "Get-VMNetworkList", "Add-VMIndex", "Get-VMIndex", "Restart-CustomVM", "Start-VMConsole", "Remove-VMCheckpoint", "Start-VMVHDOptimization", "Add-GuestCredentialsToVault", "Remove-GuestCredentialsFromVault", "Get-GuestUsername", "Get-GuestCredentials", "Get-VMSwitchList", "Get-VMNetAdapterList", "Get-VMIp", "Get-HostNameFromSeries", "Set-VMFirmware", "Get-IPType", "Test-MAC", "Get-VMAccessibleIP", "Update-VMCache"
-$Global:ActionScope   = [PSCustomObject]@{ File = "AlexkVMUtils.psm1"; FunctionScopeFilter = $FunctionScope }
-
-$Replaces += [PSCustomObject]@{Find = '-VMName $VMName'  ; Replace = '-VM $Item' ; Version = $Version; Date = $date }
-$Replaces += [PSCustomObject]@{Find = '[string] $VMName' ; Replace = '$VM' ; Version = $Version; Date = $date }
-$Replaces += [PSCustomObject]@{Find = 'VM name.'         ; Replace = 'VM.' ; Version = $Version; Date = $date }
-$Replaces += [PSCustomObject]@{Find = '-VMName "VM1"'    ; Replace = '-VM $VM' ; Version = $Version; Date = $date }
-$Replaces += [PSCustomObject]@{Find = '[$VMName]'        ; Replace = '[$($VM.Name)]' ; Version = $Version; Date = $date }
-write-host "$($Replaces | Format-Table -AutoSize| out-string)" -ForegroundColor Blue -NoNewline
+$Replaces += [PSCustomObject]@{Find = '$Global:SessionTimeout'                     ; Replace = '$Global:gsSessionTimeout' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:MailUserFile'                       ; Replace = '$Global:gsMailUserFile' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:MailPassFile'                       ; Replace = '$Global:gsMailPassFile' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:APP_SCRIPT_ADMIN_Login'             ; Replace = '$Global:gsAPP_SCRIPT_ADMIN_LoginFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:APP_SCRIPT_ADMIN_Pass'              ; Replace = '$Global:gsAPP_SCRIPT_ADMIN_PassFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:APP_SCRIPT_ADMIN_LoginFilePath'     ; Replace = '$Global:gsAPP_SCRIPT_ADMIN_LoginFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:APP_SCRIPT_ADMIN_PassFilePath'      ; Replace = '$Global:gsAPP_SCRIPT_ADMIN_PassFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:ADVALORE_APP_SCHDSVC_ADMIN_Login'   ; Replace = '$Global:gsADVALORE_APP_SCHDSVC_ADMIN_LoginFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:ADVALORE_APP_SCHDSVC_ADMIN_Password'; Replace = '$Global:gsADVALORE_APP_SCHDSVC_ADMIN_PasswordFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:APP_SCRIPT_ADMIN_Pass'              ; Replace = '$Global:gsAPP_SCRIPT_ADMIN_PassFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:ProjectsFolderPath'                 ; Replace = '$Global:gsProjectsFolderPath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$SessionTimeout'                     ; Replace = '$Global:gsSessionTimeout' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$MailUserFile'                       ; Replace = '$Global:gsMailUserFile' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$MailPassFile'                       ; Replace = '$Global:gsMailPassFile' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$APP_SCRIPT_ADMIN_Login'             ; Replace = '$Global:gsAPP_SCRIPT_ADMIN_LoginFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$APP_SCRIPT_ADMIN_Pass'              ; Replace = '$Global:gsAPP_SCRIPT_ADMIN_PassFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$ADVALORE_APP_SCHDSVC_ADMIN_Login'   ; Replace = '$Global:gsADVALORE_APP_SCHDSVC_ADMIN_LoginFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$ADVALORE_APP_SCHDSVC_ADMIN_Password'; Replace = '$Global:gsADVALORE_APP_SCHDSVC_ADMIN_PasswordFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$APP_SCRIPT_ADMIN_Pass'              ; Replace = '$Global:gsAPP_SCRIPT_ADMIN_PassFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$APP_SCRIPT_ADMIN_LoginFilePath'     ; Replace = '$Global:gsAPP_SCRIPT_ADMIN_LoginFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$APP_SCRIPT_ADMIN_PassFilePath'      ; Replace = '$Global:gsAPP_SCRIPT_ADMIN_PassFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$ProjectsFolderPath'                 ; Replace = '$Global:gsProjectsFolderPath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Using:ScriptLogFilePath'            ; Replace = '$Using:gsScriptLogFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$using:ParentLevel'                  ; Replace = '$using:gsParentLevel' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$using:LogFileNamePosition'          ; Replace = '$using:gsLogFileNamePosition' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:StateObject'                 ; Replace = '$Global:gsStateObject' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:StateFilePath'               ; Replace = '$Global:gsStateFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Global:Plugins'                     ; Replace = '$Global:gsPlugins' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$StateObject'                        ; Replace = '$Global:gsStateObject' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$StateFilePath'                      ; Replace = '$Global:gsStateFilePath' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = '$Plugins'                            ; Replace = '$Global:gsPlugins' ; Version = $Version; Date = $date }

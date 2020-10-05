@@ -23,10 +23,10 @@ if (@($Global:gsScriptStack).count) {
     # Restore parent script params
     $LastScriptStackItem = $Global:gsScriptStack  | Select-Object -last 1 
 
-    $Global:ScriptStartTime    = $LastScriptStackItem.ScriptStartTime
+    $Global:ScriptStartTime      = $LastScriptStackItem.ScriptStartTime
     $Global:gsParentLevel        = $LastScriptStackItem.ParentLevel
     $Global:gsScriptName         = $LastScriptStackItem.ScriptName
-    $Global:ProjectRoot        = $LastScriptStackItem.ProjectRoot
+    $Global:ProjectRoot          = $LastScriptStackItem.ProjectRoot
     $Global:gsScriptArguments    = $LastScriptStackItem.ScriptArguments
     $Global:gsScriptFileName     = $LastScriptStackItem.ScriptFileName
     $Global:gsScriptBaseFileName = $LastScriptStackItem.ScriptBaseFileName
@@ -41,7 +41,8 @@ Else {
 
     $TotalVars = (Get-Variable -Name *).count
     [string] $RemovedVars = ""
-    foreach ($item in (Get-Variable -Name * -Scope local | Where-Object { ($_.options -eq "None") -and ($_.name -NotLike "*psEditor*") -and ($_.name -ne "TotalVars") -and ($_.name -ne "InitVarsCount") -and ($_.name -ne "RemovedVars") -and ($_.name.Length -gt 1) })) {
+    $ExcludeVarList = "TotalVars", "gsInitVarsCount", "RemovedVars"
+    foreach ($item in (Get-Variable -Name * -Scope local | Where-Object { ($_.options -eq "None") -and ($_.name -NotLike "*psEditor*") -and ($_.name -notin $ExcludeVarList) -and ($_.name.Length -gt 1) })) {
         Try {
             #Write-Host "Try to remove [$($item.name)]."
             Remove-Variable $item.name -scope local -ErrorAction SilentlyContinue
@@ -53,7 +54,7 @@ Else {
         }       
     }
     $AfterRemove = (Get-Variable -Name *).count - 1
-    Write-Host "Removed [$AfterRemove/$TotalVars], now [$($TotalVars-$AfterRemove)], on start [$Global:gsInitVarsCount]." # Removed vars [$RemovedVars]."
+    Write-Host "Removed [$AfterRemove/$TotalVars], now [$($TotalVars-$AfterRemove)], on start [$($Global:gsInitVarsCount)]." # Removed vars [$RemovedVars]."
     Remove-Variable "TotalVars", "InitVarsCount", "AfterRemove", "RemovedVars" -scope local -ErrorAction SilentlyContinue
 }
 Exit 0

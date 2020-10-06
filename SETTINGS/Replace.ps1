@@ -1,5 +1,5 @@
 #Replace file
-[array] $Global:ReplaceScope = "C:\DATA\MyProjects\Projects\ScriptScheduler" #$Global:gsProjectsFolderPath
+[array] $Global:ReplaceScope = "C:\DATA\MyProjects\ProjectServices\ErrorLogWatcher" #$Global:gsProjectsFolderPath
 #$Global:ReplaceScope        += $Global:gsProjectServicesFolderPath
 #$Global:ReplaceScope += "C:\Program Files\WindowsPowerShell\Modules\AlexkUtils"
 # $Global:ReplaceScope += "D:\DATA\DOCUMENTS\MyProjects\Projects\VirtualLab-Win2016-OPNSens"
@@ -93,12 +93,12 @@ $Replaces += [PSCustomObject]@{Find = '$TemplateProjectPath'              ; Repl
 $Replaces += [PSCustomObject]@{Find = '$GlobalSettingsSuccessfullyLoaded' ; Replace = '$Global:gsGlobalSettingsSuccessfullyLoaded' ; Version = $Version; Date = $date }
 $Replaces += [PSCustomObject]@{Find = '$GlobalKey1'                       ; Replace = '$Global:gsGlobalKey1' ; Version = $Version; Date = $date }
 $Replaces += [PSCustomObject]@{Find = '$GlobalVMKey1'                     ; Replace = '$Global:gsGlobalVMKey1' ; Version = $Version; Date = $date }
-$Replaces += [PSCustomObject]@{Find = '.AUTHOR'                           ; Replace = 'AUTHOR' ; Version = $Version; Date = $date }
-$Replaces += [PSCustomObject]@{Find = '.DATE'                             ; Replace = 'DATE' ; Version = $Version; Date = $date }
-$Replaces += [PSCustomObject]@{Find = '.VER'                              ; Replace = 'VER' ; Version = $Version; Date = $date }
-$Replaces += [PSCustomObject]@{Find = '.LANG'                             ; Replace = 'LANG' ; Version = $Version; Date = $date }
-$Replaces += [PSCustomObject]@{Find = '.NOTE'                             ; Replace = '.NOTES' ; Version = $Version; Date = $date }
-$Replaces += [PSCustomObject]@{Find = '.PARAMETER'                        ; Replace = '' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = ' .AUTHOR'                           ; Replace = ' AUTHOR' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = ' .DATE'                             ; Replace = ' DATE' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = ' .VER'                              ; Replace = ' VER' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = ' .LANG'                             ; Replace = ' LANG' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = ' .NOTE'                             ; Replace = ' .NOTES' ; Version = $Version; Date = $date }
+$Replaces += [PSCustomObject]@{Find = ' .PARAMETER'                        ; Replace = '' ; Version = $Version; Date = $date }
 
 $Version = "1"
 $Date = Get-Date -Date "02.10.2020"
@@ -134,3 +134,8 @@ $Replaces += [PSCustomObject]@{Find = '$Global:Plugins'                     ; Re
 $Replaces += [PSCustomObject]@{Find = '$StateObject'                        ; Replace = '$Global:gsStateObject' ; Version = $Version; Date = $date }
 $Replaces += [PSCustomObject]@{Find = '$StateFilePath'                      ; Replace = '$Global:gsStateFilePath' ; Version = $Version; Date = $date }
 $Replaces += [PSCustomObject]@{Find = '$Plugins'                            ; Replace = '$Global:gsPlugins' ; Version = $Version; Date = $date }
+
+$Version = "1"
+$Date = Get-Date -Date "05.10.2020"
+
+$Replaces += [PSCustomObject]@{Find = ' .AUTOR'                           ; Replace = ' AUTHOR' ; Version = $Version; Date = $date }

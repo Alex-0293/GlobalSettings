@@ -1,4 +1,3 @@
-# Rename this file to Settings-[..].ps1
 # Rename this file to Settings.ps1
 ######################### no replacement #####################
 # Latest Ver:1.1
@@ -71,13 +70,15 @@ $Global:gsRunningCredentials            = [System.Security.Principal.WindowsIden
 [array]  $Global:gsWorkFolderList             = @($Global:gsProjectsFolderPath, $Global:gsProjectServicesFolderPath, $Global:gsOtherProjectsFolderPath)
 [string] $Global:gsTemplateProjectPath        = "$($Global:gsProjectServicesFolderPath)\TemplateProject"
 
-[bool]   $Global:gsGlobalSettingsSuccessfullyLoaded = $True
-
 [string] $Global:gsGlobalKey1        = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\Key1.dat"           # AES Key.
 [string] $Global:gsGlobalVMKey1      = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\VMKey.dat"          # AES Key.
 
 [bool] $Global:gsSuppressOutput    = $false
 [bool] $Global:gsPesterTestRunning = $false
+
+[int]   $Global:gsSessionTimeout = ""         
+[string]$Global:gsMailUserFile   = ""         
+[string]$Global:gsMailPassFile   = ""   
 
 [string[]] $Global:gsStandardModule = "Microsoft.PowerShell.Management", "Microsoft.PowerShell.Security", "Microsoft.PowerShell.Utility", "Microsoft.WSMan.Management", "oh-my-posh", "posh-git", "PowerShellEditorServices.Commands", "PowerShellEditorServices.VSCode", "PSReadLine", "AlexkUtils"
 

@@ -1,4 +1,4 @@
-# Rename this file to Settings.ps1
+# Rename this file to Settings-[..].ps1
 ######################### value replacement #####################
 [string] $Global:SmtpServer          = ""          # SMTP Server FQDN or IP
 [string] $Global:From                = ""          # Mail from:

@@ -1,15 +1,8 @@
 ACL/*
 VALUES/*
 SETTINGS/Settings.ps1
-DATA/NetworkAdapterCache.xml
-DATA/SwitchCache.xml
-DATA/VMCache.xml
-DATA/VMCheckpointCache.xml
-UML.puml
-UML.wsd
 SETTINGS/Mail.ps1
 SETTINGS/SettingsTelegram.ps1
 SETTINGS/SettingsEmail.ps1
-VMCheckpointCache.xml
-NetworkAdapterCache.xml
-SwitchCache.xml
+DATA/*
+UML.puml

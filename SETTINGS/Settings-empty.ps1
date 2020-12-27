@@ -1,3 +1,4 @@
+# Rename this file to Settings-[..].ps1
 # Rename this file to Settings.ps1
 ######################### no replacement #####################
 # Latest Ver:1.1
@@ -5,7 +6,7 @@ function Get-WorkDir () {
     if ($PSScriptRoot -eq "") {
         if ($PWD -ne "") {
             $MyScriptRoot = $PWD
-        }        
+        }
         else {
             Write-Host "Where i am? What is my work dir?"
         }
@@ -34,18 +35,20 @@ trap {
 [string] $Global:gsSETTINGSFolder       = "SETTINGS"
 [string] $Global:gsVALUESFolder         = "VALUES"
 [string] $Global:gsACLFolder            = "ACL"
+[string] $Global:gsTESTSFolder          = "TESTS"
 [string] $Global:gsDefaultSettingsFile  = "Settings.ps1"
 [string] $Global:gsEmptySettingsFile    = "Settings-empty.ps1"
-[array]  $Global:gsSPECIALFolders       = @($Global:gsDATAFolder, $Global:gsLOGSFolder, $Global:gsSCRIPTSFolder, $Global:gsSETTINGSFolder, $Global:gsVALUESFolder, $Global:gsACLFolder)
+[array]  $Global:gsSPECIALFolders       = @($Global:gsDATAFolder, $Global:gsLOGSFolder, $Global:gsSCRIPTSFolder, $Global:gsSETTINGSFolder, $Global:gsVALUESFolder, $Global:gsTESTSFolder, $Global:gsACLFolder)
 [string] $Global:gsKEYSFolder           = "$($Global:gsVALUESFolder)\KEYS"
-[string] $Global:gsGlobalRoot           = Split-Path $ProjectRoot   -parent
+#[string] $Global:gsGlobalRoot           = Split-Path $ProjectRoot   -parent
 [string] $Global:gsGlobalSettingsPath   = Split-Path (Split-Path $PSCommandPath -parent) -Parent
 [string] $Global:gsHelpers              = "$(Split-Path $($Global:gsGlobalSettingsPath) -parent)\HELPERS"
-[string] $Global:gsScriptLocalHost      = $Env:COMPUTERNAME
+[string] $Global:gsScriptLocalHost      = $Env:ComputerName
 [string] $Global:gsGlobalDateFormat     = "dd.MM.yyyy"
 [string] $Global:gsGlobalDateTimeFormat = "dd.MM.yyyy HH:mm:ss"
 [int16]  $Global:gsScriptOperationTry   = 3
 [int16]  $Global:gsPauseBetweenRetries  = 500 # MilliSeconds
+[int16]  $Global:gsInitVarsCount        = (Get-Variable -Name *).count
 [int16]  $Global:gsLogFileNamePosition  = 230
 $Global:gsRunningCredentials            = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 
@@ -60,19 +63,32 @@ $Global:gsRunningCredentials            = [System.Security.Principal.WindowsIden
 [int16]  $Global:gsParentLevel        = 0
 
 
-#Ver 1.2 
+#Ver 1.2
 [string] $Global:gsProjectServicesFolderPath  = "$($Global:gsMyProjectFolderPath)\ProjectServices"
-[string] $Global:gsProjectsFolderPath           = "$($Global:gsMyProjectFolderPath)\PROJECTS"
+[string] $Global:gsProjectsFolderPath         = "$($Global:gsMyProjectFolderPath)\PROJECTS"
 [string] $Global:gsOtherProjectsFolderPath    = "$($Global:gsMyProjectFolderPath)\OtherProjects"
-[string] $Global:gsDisabledProjectsFolderPath = "$($Global:gsMyProjectFolderPath)\DisabledProjects" #Ver 1.3 
+[string] $Global:gsDisabledProjectsFolderPath = "$($Global:gsMyProjectFolderPath)\DisabledProjects" #Ver 1.3
 [array]  $Global:gsWorkFolderList             = @($Global:gsProjectsFolderPath, $Global:gsProjectServicesFolderPath, $Global:gsOtherProjectsFolderPath)
 [string] $Global:gsTemplateProjectPath        = "$($Global:gsProjectServicesFolderPath)\TemplateProject"
 
-[string] $Global:gsGlobalKey1   = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\GlobalKey1.dat"      # AES Key.
-[string] $Global:gsGlobalVMKey1 = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\VMKey.dat"          # AES Key.
+[bool]   $Global:gsGlobalSettingsSuccessfullyLoaded = $True
 
+[string] $Global:gsGlobalKey1        = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\Key1.dat"           # AES Key.
+[string] $Global:gsGlobalVMKey1      = "$($Global:gsGlobalSettingsPath)\$($Global:gsKEYSFolder)\VMKey.dat"          # AES Key.
 
-[int]   $Global:gsSessionTimeout = ""         
-[string]$Global:gsMailUserFile   = ""         
-[string]$Global:gsMailPassFile   = ""         
+[bool] $Global:gsSuppressOutput    = $false
+[bool] $Global:gsPesterTestRunning = $false
 
+[string[]] $Global:gsStandardModule = "Microsoft.PowerShell.Management", "Microsoft.PowerShell.Security", "Microsoft.PowerShell.Utility", "Microsoft.WSMan.Management", "oh-my-posh", "posh-git", "PowerShellEditorServices.Commands", "PowerShellEditorServices.VSCode", "PSReadLine", "AlexkUtils"
+
+[array] $Global:gsImportedModule = @()
+
+# Object for code pipelining
+[PSCustomObject] $Global:gsGitMetaData = @{
+    InitialCommit = [bool] $True
+    Commit        = [bool] $False
+    Message       = [string] ""
+    Branch        = [string] "master"
+}
+
+[bool]   $Global:gsGlobalSettingsSuccessfullyLoaded = $True

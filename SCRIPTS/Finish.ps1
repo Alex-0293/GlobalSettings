@@ -1,3 +1,6 @@
+param (
+    $return
+)
 # Error trap
 trap {
     if (get-module -FullyQualifiedName AlexkUtils) {
@@ -30,7 +33,7 @@ if (@($Global:gsScriptStack).count) {
     $Global:gsScriptArguments    = $LastScriptStackItem.ScriptArguments
     $Global:gsScriptFileName     = $LastScriptStackItem.ScriptFileName
     $Global:gsScriptBaseFileName = $LastScriptStackItem.ScriptBaseFileName
-    $Global:gsScriptLogFilePath  = $LastScriptStackItem.ScriptLogFilePath  
+    $Global:gsScriptLogFilePath  = $LastScriptStackItem.ScriptLogFilePath
 }
 Else {
     if (Test-Path "$ProjectRoot\debug.txt") {
@@ -57,4 +60,9 @@ Else {
     Write-Host "Removed [$AfterRemove/$TotalVars], now [$($TotalVars-$AfterRemove)], on start [$($Global:gsInitVarsCount)]." # Removed vars [$RemovedVars]."
     Remove-Variable "TotalVars", "InitVarsCount", "AfterRemove", "RemovedVars" -scope local -ErrorAction SilentlyContinue
 }
-Exit 0
+if ($return){
+    return $return
+}
+Else {
+    Exit 0
+}

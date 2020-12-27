@@ -46,7 +46,7 @@ Function Initialize-Script   ($ScriptRoot) {
     Write-Host "Initializing global settings." -ForegroundColor DarkGreen
     Get-SettingsFromFile -SettingsFile $Global:gsGlobalSettingsPath
 
-    if ( -not $Global:gsGlobalSettingsSuccessfullyLoaded ) { 
+    if ( -not $Global:gsGlobalSettingsSuccessfullyLoaded ) {
         Add-ToLog -Message "[Error] Error loading global settings!" -logFilePath "$(Split-Path -Path $Global:MyScriptRoot -Parent)\LOGS\Errors.log" -Display -Status "Error" -Format "dd.MM.yyyy HH:mm:ss"
         Exit 1
     }
